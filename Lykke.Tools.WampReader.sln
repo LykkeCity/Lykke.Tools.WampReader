@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Tools.WampReader", "src\Lykke.Tools.WampReader\Lykke.Tools.WampReader.csproj", "{CF691011-481A-4BB9-8279-6A91037FC5D6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CF691011-481A-4BB9-8279-6A91037FC5D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF691011-481A-4BB9-8279-6A91037FC5D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF691011-481A-4BB9-8279-6A91037FC5D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF691011-481A-4BB9-8279-6A91037FC5D6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {71CF71DD-CD88-45D9-936A-7E44659365E5}
+	EndGlobalSection
+EndGlobal
