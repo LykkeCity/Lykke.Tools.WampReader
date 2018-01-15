@@ -58,7 +58,9 @@ namespace Lykke.Tools.WampReader
         private static async Task<IWampChannel> ConnectAsync(AppArguments appArguments)
         {
             var factory = new DefaultWampChannelFactory();
-            var channel = factory.CreateJsonChannel(GetUri(appArguments), appArguments.Realm);
+            var channel = string.IsNullOrEmpty(appArguments.AuthMethod) && string.IsNullOrEmpty(appArguments.AuthId)
+                ? factory.CreateJsonChannel(GetUri(appArguments), appArguments.Realm)
+                : factory.CreateJsonChannel(GetUri(appArguments), appArguments.Realm, new ClientAuthenticator(appArguments.AuthMethod, appArguments.AuthId));
 
             while (!channel.RealmProxy.Monitor.IsConnected)
             {
@@ -135,11 +137,21 @@ namespace Lykke.Tools.WampReader
                 .SetDefault(null)
                 .WithDescription("-o <file>. Output file path. Optional, default is empty");
 
+            parser.Setup(x => x.AuthMethod)
+                .As('m')
+                .SetDefault(null)
+                .WithDescription("-m <auth method>. Auth method name. Optional, default is empty");
+            
+            parser.Setup(x => x.AuthId)
+                .As('i')
+                .SetDefault(null)
+                .WithDescription("-i <authentication id>. Authentication id. Optional, default is empty");
+
             parser.Setup(x => x.AppendOutput)
                 .As('a')
                 .SetDefault(false)
                 .WithDescription("-a. Append output file. Optional, default is false");
-
+            
             var parsingResult = parser.Parse(args);
 
             if (!parsingResult.HasErrors)
