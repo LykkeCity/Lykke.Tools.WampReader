@@ -58,9 +58,11 @@ namespace Lykke.Tools.WampReader
         private static async Task<IWampChannel> ConnectAsync(AppArguments appArguments)
         {
             var factory = new DefaultWampChannelFactory();
-            var channel = string.IsNullOrEmpty(appArguments.AuthMethod) && string.IsNullOrEmpty(appArguments.AuthId)
+            IWampClientAuthenticator clientAuthenticator = GetClientAuthenticator(appArguments.AuthMethod, appArguments.AuthId);
+            
+            var channel = clientAuthenticator == null
                 ? factory.CreateJsonChannel(GetUri(appArguments), appArguments.Realm)
-                : factory.CreateJsonChannel(GetUri(appArguments), appArguments.Realm, new ClientAuthenticator(appArguments.AuthMethod, appArguments.AuthId));
+                : factory.CreateJsonChannel(GetUri(appArguments), appArguments.Realm, clientAuthenticator);
 
             while (!channel.RealmProxy.Monitor.IsConnected)
             {
@@ -80,6 +82,23 @@ namespace Lykke.Tools.WampReader
             }
 
             return channel;
+        }
+
+        private static IWampClientAuthenticator GetClientAuthenticator(string authMethod, string authId)
+        {
+            if (!string.IsNullOrEmpty(authMethod) && !string.IsNullOrEmpty(authId))
+            {
+                switch (authMethod)
+                {
+                    case "ticket":
+                        return new TicketAuthenticator(authId);
+                    default:
+                        Console.WriteLine("Unknown auth method. Anonimous authentication will be used");
+                        break;
+                }
+            }
+
+            return null;
         }
 
         private static string GetUri(AppArguments appArguments)
