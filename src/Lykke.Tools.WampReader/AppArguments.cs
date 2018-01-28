@@ -12,5 +12,6 @@ namespace Lykke.Tools.WampReader
         public bool AppendOutput { get; set; }
         public string AuthMethod { get; set; }
         public string AuthId { get; set; }
+        public string Signature { get; set; }
     }
 }

@@ -60,7 +60,8 @@ namespace Lykke.Tools.WampReader
             var factory = new DefaultWampChannelFactory();
             var channel = string.IsNullOrEmpty(appArguments.AuthMethod) && string.IsNullOrEmpty(appArguments.AuthId)
                 ? factory.CreateJsonChannel(GetUri(appArguments), appArguments.Realm)
-                : factory.CreateJsonChannel(GetUri(appArguments), appArguments.Realm, new ClientAuthenticator(appArguments.AuthMethod, appArguments.AuthId));
+                : factory.CreateJsonChannel(GetUri(appArguments), appArguments.Realm, 
+                    new ClientAuthenticator(appArguments.AuthMethod, appArguments.AuthId, appArguments.Signature));
 
             while (!channel.RealmProxy.Monitor.IsConnected)
             {
@@ -146,6 +147,12 @@ namespace Lykke.Tools.WampReader
                 .As('i')
                 .SetDefault(null)
                 .WithDescription("-i <authentication id>. Authentication id. Optional, default is empty");
+            
+            parser.Setup(x => x.Signature)
+                .As('s')
+                .SetDefault(null)
+                .WithDescription("-s <authentication signature>. Authentication signature (useful for ticket auth). " +
+                                 "Optional, default is empty");
 
             parser.Setup(x => x.AppendOutput)
                 .As('a')
